@@ -3,168 +3,184 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Modern Calculator</title>
+  <title>My Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: #0f0f0f; color: #fff; scroll-behavior: smooth; overflow-x: hidden; }
+
+    header {
+      position: fixed; top: 0; width: 100%; padding: 20px 50px;
+      display: flex; justify-content: space-between; align-items: center;
+      z-index: 1000; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px);
+    }
+    header h1 { font-size: 24px; color: #00f0ff; letter-spacing: 1px; }
+    nav ul { list-style: none; display: flex; }
+    nav ul li { margin-left: 20px; }
+    nav ul li a { color: #fff; text-decoration: none; transition: 0.3s; }
+    nav ul li a:hover { color: #00f0ff; }
+
+    /* Home Section */
+    #home {
       height: 100vh;
-      background: linear-gradient(135deg, #4facfe, #00f2fe);
-      font-family: "Poppins", sans-serif;
-      margin: 0;
+      display: flex; justify-content: center; align-items: center;
+      text-align: center; position: relative;
+      background: linear-gradient(270deg, #00f0ff, #ff00f0, #00ff6a, #ff6a00);
+      background-size: 800% 800%;
+      animation: gradientAnimation 20s ease infinite;
+      overflow: hidden;
     }
+    #home::before {
+      content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6); z-index: 1;
+    }
+    #home-content {
+      position: relative; z-index: 2;
+      animation: fadeIn 2s ease forwards;
+    }
+    #home img {
+      width: 180px; height: 180px; border-radius: 50%; border: 4px solid #00f0ff;
+      margin-bottom: 20px; transition: transform 0.5s, box-shadow 0.5s;
+    }
+    #home img:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 20px 40px rgba(0,255,255,0.5); }
+    #home h2 { font-size: 40px; margin-bottom: 10px; text-shadow: 2px 2px 15px rgba(0,255,255,0.7); }
+    #home p { font-size: 22px; text-shadow: 1px 1px 10px rgba(0,255,255,0.6); }
 
-    .calculator {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(12px);
-      padding: 20px;
-      border-radius: 20px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-      width: 320px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    @keyframes gradientAnimation {
+      0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%}
     }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-30px);} to { opacity: 1; transform: translateY(0);} }
 
-    .display {
-      width: 100%;
-      height: 70px;
-      background: rgba(0, 0, 0, 0.85);
-      color: #0f0;
-      text-align: right;
-      font-size: 32px;
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 20px;
-      overflow-x: auto;
+    /* Glassmorphism Sections */
+    section {
+      margin: 80px auto; max-width: 900px;
+      padding: 50px; border-radius: 20px;
+      background: rgba(255,255,255,0.05); backdrop-filter: blur(15px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      opacity: 0; transform: translateY(30px);
+      transition: 1s;
     }
+    section.visible { opacity: 1; transform: translateY(0); }
 
-    .buttons {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-      width: 100%;
-    }
+    h2.section-title { text-align: center; margin-bottom: 30px; font-size: 32px; color: #00f0ff; }
 
-    button {
-      height: 65px;
-      border: none;
-      border-radius: 50%;
-      font-size: 22px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+    /* Skills */
+    .skills-list { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+    .skill {
+      background: #00f0ff; color: #0f0f0f; padding: 12px 25px; border-radius: 25px; font-weight: 600;
+      transition: 0.3s; cursor: pointer;
     }
+    .skill:hover { background: #ff00f0; transform: scale(1.1); color: #fff; }
 
-    button:active {
-      transform: scale(0.95);
-      box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
+    /* Projects */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 20px; }
+    .project-card {
+      background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px; transition: 0.5s;
+      text-align: center; backdrop-filter: blur(5px);
     }
+    .project-card:hover { transform: translateY(-10px) scale(1.05); background: rgba(255,0,255,0.2); }
 
-    .number {
-      background: linear-gradient(135deg, #444, #222);
-      color: white;
-    }
+    /* Footer */
+    footer { text-align: center; padding: 20px; background: rgba(0,0,0,0.7); color: #00f0ff; }
 
-    .operator {
-      background: linear-gradient(135deg, #ff9800, #e65100);
-      color: white;
-    }
-
-    .equal {
-      background: linear-gradient(100deg, #4caf50, #087f23);
-      color: white;
-      grid-column: span 1;
-      border-radius: 20px;
-    }
-
-    .clear {
-      background: linear-gradient(135deg, #f44336, #b71c1c);
-      color: white;
-    }
-
-    .dot {
-      background: linear-gradient(135deg, #444, #222);
-      color: white;
-    }
-
-    @media (max-width: 400px) {
-      .calculator {
-        width: 95%;
-      }
-      .display {
-        font-size: 26px;
-      }
-      button {
-        height: 55px;
-        font-size: 18px;
-      }
-    }
   </style>
 </head>
 <body>
-  <div class="calculator">
-    <div class="display" id="display">0</div>
-    <div class="buttons">
-      <button class="clear">C</button>
-      <button class="operator">/</button>
-      <button class="operator">*</button>
-      <button class="operator">-</button>
 
-      <button class="number">7</button>
-      <button class="number">8</button>
-      <button class="number">9</button>
-      <button class="operator">+</button>
+  <header>
+    <h1>My Portfolio</h1>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+      </ul>
+    </nav>
+  </header>
 
-      <button class="number">4</button>
-      <button class="number">5</button>
-      <button class="number">6</button>
-      <button class="equal">=</button>
-
-      <button class="number">1</button>
-      <button class="number">2</button>
-      <button class="number">3</button>
-      
-      <button class="number">0</button>
-      <button class="dot">.</button>
+  <!-- Home Section -->
+  <section id="home">
+    <div id="home-content">
+      <img src="me.jpeg" alt="My Photo">
+      <h2>Hello, I'm Anshika singh</h2>
+      <p>Front-End Developer | Coder | Designer</p>
     </div>
-  </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about">
+    <h2 class="section-title">About Me</h2>
+    <p>
+      I am a passionate web developer focused on creating interactive, responsive, and eye-catching websites. 
+      I love turning ideas into reality using modern web technologies.
+    </p>
+  </section>
+
+  <!-- Education Section -->
+  <section id="education">
+    <h2 class="section-title">Education</h2>
+    <ul>
+      <li><strong>Bachelor’s in Computer Science</strong> - SMS University (2024 - Present)</li>
+      <li><strong>Intermediate</strong> - A.V.M School (2023 - 2024)</li>
+      <li><strong>High School</strong> - A.V.M School (2021 - 2022)</li>
+    </ul>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills">
+    <h2 class="section-title">Skills</h2>
+    <div class="skills-list">
+      <div class="skill">HTML</div>
+      <div class="skill">CSS</div>
+      <div class="skill">JavaScript</div>
+      <div class="skill">React</div>
+      <div class="skill">Python</div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects">
+    <h2 class="section-title">Projects</h2>
+    <div class="projects-grid">
+      <div class="project-card">
+        <h3>Portfolio Website</h3>
+        <p>A personal portfolio showcasing my skills and projects.</p>
+      </div>
+      <div class="project-card">
+        <h3>Weather App</h3>
+        <p>A web app that shows live weather using API integration.</p>
+      </div>
+      <div class="project-card">
+        <h3>To-Do List</h3>
+        <p>A simple to-do list app with add and delete functionality.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 My Portfolio. All rights reserved.</p>
+  </footer>
 
   <script>
-    const display = document.getElementById("display");
-    const buttons = document.querySelectorAll("button");
-    let currentInput = "";
-    let resetDisplay = false;
-
-    buttons.forEach(button => {
-      button.addEventListener("click", () => {
-        const value = button.textContent;
-
-        if (button.classList.contains("number") || button.classList.contains("operator") || button.classList.contains("dot")) {
-          if (resetDisplay) {
-            currentInput = "";
-            resetDisplay = false;
-          }
-          currentInput += value;
-          display.textContent = currentInput;
-        } 
-        else if (button.classList.contains("equal")) {
-          try {
-            currentInput = eval(currentInput).toString();
-            display.textContent = currentInput;
-            resetDisplay = true;
-          } catch {
-            display.textContent = "Error";
-            currentInput = "";
-          }
-        } 
-        else if (button.classList.contains("clear")) {
-          currentInput = "";
-          display.textContent = "0";
-        }
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener("click", e => {
+        e.preventDefault();
+        document.querySelector(anchor.getAttribute("href")).scrollIntoView({ behavior: "smooth" });
       });
     });
+
+    // Fade-in sections on scroll
+    const sections = document.querySelectorAll('section');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) { entry.target.classList.add('visible'); }
+      });
+    }, { threshold: 0.2 });
+    sections.forEach(section => observer.observe(section));
   </script>
+
 </body>
 </html>
